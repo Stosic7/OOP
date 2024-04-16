@@ -1,1 +1,1 @@
-
+Resenje nije oficijalno.
