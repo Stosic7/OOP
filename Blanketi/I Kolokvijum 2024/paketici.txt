@@ -1,0 +1,16 @@
+Cena: 100
+Broj masnica: 0
+Procenat kakaa: 20
+
+Cena: 1000
+Broj masnica: 0
+Tip materijala: plisana
+
+Cena: 105
+Broj masnica: 3
+Procenat kakaa: 33
+
+Cena: 1020.37
+Broj masnica: 2
+Tip materijala: plisana
+
