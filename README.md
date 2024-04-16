@@ -1,2 +1,2 @@
-Rešenja nisu oficjalna. Moguce su greške.
+Rešenja nisu oficijalna. Moguce su greške.
 Autori: Luka Stošić
