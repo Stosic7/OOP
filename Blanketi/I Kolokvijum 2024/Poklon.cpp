@@ -1,46 +1,46 @@
 #include <iostream>
 #include <fstream>
-#include "Poklon.h"
+#include "Poklon.h" // include za header poklon
 
-using namespace std;
+using namespace std; // kontejnerska klasa
 
-Poklon::Poklon()
+Poklon::Poklon() // implementacija default konstruktora
 {
-	cena = 0;
-	brojMasnica = 0;
+	cena = 0; // self explanatory 
+	brojMasnica = 0; // self explanatory 
 }
 
-Poklon::Poklon(double _cena, int _brojMasnica)
+Poklon::Poklon(double _cena, int _brojMasnica) // implementacija custom konstruktora
 {
 
-	cena = _cena;
-	brojMasnica = _brojMasnica;
-
-}
-
-Poklon::Poklon(const Poklon& og)
-{
-
-	cena = og.cena;
-	brojMasnica = og.brojMasnica;
+	cena = _cena; // cena uzima vrednost parametra _cena
+	brojMasnica = _brojMasnica; // isto i za ovo
 
 }
 
-Poklon :: ~Poklon()
-{}
-
-void Poklon::prikazi(ostream& izlaz) const
+Poklon::Poklon(const Poklon& og) // -||- copy contrucotra
 {
 
-	izlaz << "Cena: " << cena << "\nBroj masnica: " << brojMasnica << endl;
+	cena = og.cena; // isti fazon ko za konstruktor (za staticke promenljive) samo uzima parametar og.
+	brojMasnica = og.brojMasnica; // isto
 
 }
 
-ostream& operator<<(ostream& izlaz, const Poklon& p)
+Poklon :: ~Poklon() // -||- destruktora
+{} // prazno, jer su sve promenljive staticke, posle cemo videti kako se implementira za dinamicke promenljive
+
+void Poklon::prikazi(ostream& izlaz) const // -||- funckije za prikaz
 {
 
-	p.prikazi(izlaz);
+	izlaz << "Cena: " << cena << "\nBroj masnica: " << brojMasnica << endl; //  self explanatory 
 
-	return izlaz;
+}
+
+ostream& operator<<(ostream& izlaz, const Poklon& p) // implementacija operatora <<
+{
+
+	p.prikazi(izlaz); // poziva se prikaz kome se prosledjuje izlaz
+
+	return izlaz; // mora da vrati izlaz
 
 }
