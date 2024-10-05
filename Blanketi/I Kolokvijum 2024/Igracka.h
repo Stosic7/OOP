@@ -21,4 +21,7 @@ public:
 
 	int vratiBrojMasnica() const; // ovde implementiramo ovu funkciju
 
+	// ovde ne treba operator <<, jer se operatori NE NASLEDJUJU. Koristimo funkciju prikazi koja ce biti overirdovana (updatovana) u zavisnosti koji objekat se pravi, pa ce ona kao takva
+	// pozvati biti pozvana u operatoru << koji je definisan u Poklon.cpp
+
 };
