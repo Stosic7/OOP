@@ -55,33 +55,15 @@ void Skup::izbaciDuplikate()
 
 		for (int j = i + 1; j < brojelemenata; j++)
 		{
-
-			if (niz[j] > niz[j + 1])
-			{
-				int temp = niz[j];
-				niz[j] = niz[j + 1];
-				niz[j + 1] = temp;
+			if (niz[i] == niz[j]) {
+				for (int k = j; k < brojElemenata - 1; k++) {
+					niz[k] = niz[k+1];
+				}
+				brojElemenata--;
+				j--;
 			}
 		}
-
 	}
-
-	int pomocna = 1;
-	for (int i = 1; i < brojelemenata; i++)
-	{
-
-		if (niz[i] != niz[i - 1])
-		{
-
-			niz[pomocna] = niz[i];
-			pomocna++;
-
-		}
-
-	}
-
-	brojelemenata = pomocna;
-
 }
 
 bool Skup::pripadnostSkupa(int el)
