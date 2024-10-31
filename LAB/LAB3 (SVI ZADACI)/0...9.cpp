@@ -111,6 +111,8 @@ int main() {
 
 // Zadatak 1: Klasa Figura i main
 #include <iostream>
+#include <fstream>
+#include <algorithm>
 using namespace std;
 
 class Figura {
@@ -212,9 +214,14 @@ int main() {
     return 0;
 }
 
+
 // Zadatak 2: Klasa Point i main
 #include <iostream>
+#include <fstream>
+#include <cstring>
 #include <cmath>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 class Point {
@@ -244,15 +251,26 @@ private:
     char* nazivDrzave;
     int brojStanovnika;
 
+    int parsePopulation(const string& input) {
+        string cleanedInput;
+        for (char c : input) {
+            if (isdigit(c)) {
+                cleanedInput += c;
+            }
+        }
+        return stoi(cleanedInput);
+    }
+
 public:
     PointCity() : Point(), nazivGrada(nullptr), nazivDrzave(nullptr), brojStanovnika(0) {}
 
-    PointCity(double x, double y, const char* grad, const char* drzava, int brojStanovnika)
-        : Point(x, y), brojStanovnika(brojStanovnika) {
+    PointCity(double x, double y, const char* grad, const char* drzava, const string& brojStanovnikaStr)
+        : Point(x, y) {
         nazivGrada = new char[strlen(grad) + 1];
         strcpy(nazivGrada, grad);
         nazivDrzave = new char[strlen(drzava) + 1];
         strcpy(nazivDrzave, drzava);
+        brojStanovnika = parsePopulation(brojStanovnikaStr);
     }
 
     ~PointCity() {
@@ -263,24 +281,43 @@ public:
     void printData() const override {
         cout << "City: " << nazivGrada << ", Country: " << nazivDrzave << ", Population: " << brojStanovnika << endl;
     }
+
+    int getBrojStanovnika() const {
+        return brojStanovnika;
+    }
 };
 
 int main() {
-    const int SIZE = 10;
-    PointCity niz[SIZE] = {
-        {1.0, 1.0, "Belgrade", "Serbia", 1166763},
-        {2.0, 2.0, "Los Angeles", "USA", 3884307},
-        {3.0, 3.0, "New York", "USA", 8175133},
-        {4.0, 4.0, "London", "UK", 8982000},
-        {5.0, 5.0, "Tokyo", "Japan", 13929286},
-        {6.0, 6.0, "Paris", "France", 2148327},
-        {7.0, 7.0, "Berlin", "Germany", 3769495},
-        {8.0, 8.0, "Rome", "Italy", 2872800},
-        {9.0, 9.0, "Madrid", "Spain", 3223334},
-        {10.0, 10.0, "Sydney", "Australia", 5230330}};
+    vector<PointCity> gradovi;
+    ifstream inputFile("LV3Zad3.txt");
+    if (!inputFile) {
+        cerr << "Greska pri otvaranju fajla!" << endl;
+        return 1;
+    }
 
-    for (int i = 0; i < SIZE; ++i) {
-        niz[i].printData();
+    string nazivGrada, nazivDrzave, brojStanovnika;
+    while (getline(inputFile, nazivGrada, '\t') && getline(inputFile, nazivDrzave, '\t') && getline(inputFile, brojStanovnika)) {
+        gradovi.emplace_back(0, 0, nazivGrada.c_str(), nazivDrzave.c_str(), brojStanovnika);
+    }
+    inputFile.close();
+
+    sort(gradovi.begin(), gradovi.end(), [](const PointCity& a, const PointCity& b) {
+        return a.getBrojStanovnika() < b.getBrojStanovnika();
+    });
+
+    ofstream outputFile("sorted_cities.txt");
+    if (!outputFile) {
+        cerr << "Greska pri otvaranju fajla za upis!" << endl;
+        return 1;
+    }
+
+    for (const auto& grad : gradovi) {
+        outputFile << grad.getBrojStanovnika() << "\t" << grad.nazivGrada << "\t" << grad.nazivDrzave << endl;
+    }
+    outputFile.close();
+
+    for (const auto& grad : gradovi) {
+        grad.printData();
     }
 
     return 0;
@@ -421,6 +458,7 @@ int main() {
 // Zadatak 4: Klasa Command i izvedene klase
 #include <iostream>
 #include <vector>
+#include <cstring>
 using namespace std;
 
 class Command {
@@ -549,6 +587,7 @@ int main() {
     return 0;
 }
 
+
 // Zadatak 5: Klasa Broj, RacionalanBroj, KompleksanBroj, i main
 #include <iostream>
 #include <cmath>
@@ -660,6 +699,7 @@ int main() {
 #include <cstring>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 using namespace std;
 
 class Window {
@@ -747,7 +787,6 @@ int main() {
     if (outFile.is_open()) {
         for (int i = 0; i < SIZE; ++i) {
             outFile << "Window: " << windows[i]->getTitle() << ", State: " << (windows[i]->getTitle() ? "Open" : "Closed") << endl;
-            windows[i]->draw();
         }
         outFile.close();
     } else {
@@ -762,7 +801,12 @@ int main() {
 }
 
 // Zadatak 7: Klasa Artikal, Laptop, Torba, i main
+#include <iostream>
 #include <cstring>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+using namespace std;
 
 class Artikal {
 protected:
@@ -1013,8 +1057,12 @@ int main() {
 
 // Zadatak 9: Klasa Displej, DekadniMatricniDisplej, i main
 #include <iostream>
+#include <cmath>
 #include <fstream>
-#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 class Displej {
@@ -1136,3 +1184,4 @@ int main() {
 
     return 0;
 }
+
