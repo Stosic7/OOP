@@ -1112,24 +1112,28 @@ int main() {
 
 // ZADATAK 9
 #include <iostream>
+#include <utility>
 #include <algorithm>
 #include <cmath>
 
 class Picture {
 private:
+    int** matrica;
     int width;
     int height;
-    int** matrica;
 
 public:
     // Default konstruktor
-    Picture() : width(0), height(0), matrica(nullptr) {}
+    Picture() : matrica(nullptr), width(0), height(0) {}
 
-    // Konstruktor za postavljanje dimenzija
-    Picture(int w, int h) : width(w), height(h) {
+    // Konstruktor sa dimenzijom
+    Picture(int dim) : width(dim), height(dim) {
         matrica = new int*[height];
         for (int i = 0; i < height; ++i) {
             matrica[i] = new int[width];
+            for (int j = 0; j < width; ++j) {
+                matrica[i][j] = 0;
+            }
         }
     }
 
@@ -1141,11 +1145,10 @@ public:
         delete[] matrica;
     }
 
-    // Inline funkcija za vraćanje dimenzija matrice
-    int getDimenzijuWidth() const { return width; }
-    int getDimenzijuHeight() const { return height; }
+    // Inline funkcija za vraćanje dimenzije
+    inline std::pair<int, int> getDimensions() const { return {width, height}; }
 
-    // Funkcija za promenu osvetljenja
+    // Funkcija za dodavanje osvetljenosti
     void brightness(int s) {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
@@ -1154,19 +1157,8 @@ public:
         }
     }
 
-    // Funkcija za učitavanje slike sa standardnog ulaza
-    void ucitajSadrzaj() {
-        std::cout << "Unesite sadrzaj slike: \n";
-        for (int i = 0; i < height; ++i) {
-            for (int j = 0; j < width; ++j) {
-                std::cin >> matrica[i][j];
-            }
-        }
-    }
-
-    // Funkcija za prikaz slike na standardni izlaz
-    void prikazi() const {
-        std::cout << "Sadrzaj slike: \n";
+    // Funkcija za prikaz slike
+    void display() const {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
                 std::cout << matrica[i][j] << " ";
@@ -1175,21 +1167,18 @@ public:
         }
     }
 
-    // Funkcija za promenu veličine slike (resize)
+    // Funkcija za promenu veličine slike
     void resize(int nWidth, int nHeight) {
         double nXFactor = static_cast<double>(width) / nWidth;
         double nYFactor = static_cast<double>(height) / nHeight;
 
-        int** novaMatrica = new int*[nHeight];
+        int** newMatrica = new int*[nHeight];
         for (int i = 0; i < nHeight; ++i) {
-            novaMatrica[i] = new int[nWidth];
-        }
-
-        for (int i = 0; i < nHeight; ++i) {
+            newMatrica[i] = new int[nWidth];
             for (int j = 0; j < nWidth; ++j) {
-                int originalX = static_cast<int>(std::floor(j * nXFactor));
-                int originalY = static_cast<int>(std::floor(i * nYFactor));
-                novaMatrica[i][j] = matrica[originalY][originalX];
+                int srcX = static_cast<int>(std::floor(j * nXFactor));
+                int srcY = static_cast<int>(std::floor(i * nYFactor));
+                newMatrica[i][j] = matrica[srcY][srcX];
             }
         }
 
@@ -1198,34 +1187,48 @@ public:
         }
         delete[] matrica;
 
-        matrica = novaMatrica;
+        matrica = newMatrica;
         width = nWidth;
         height = nHeight;
     }
 
-    // Funkcija za inverziju slike
-    void invert() {
+    // Učitavanje sadržaja iz standardnog ulaza
+    void loadFromInput() {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
-                matrica[i][j] = 512 - matrica[i][j];
+                std::cin >> matrica[i][j];
+                matrica[i][j] = std::min(512, std::max(0, matrica[i][j]));
             }
         }
     }
 };
 
 int main() {
-    Picture picture(10, 10);
-    picture.ucitajSadrzaj();
-    picture.invert();
-    picture.prikazi();
+    // Kreiranje objekta klase Picture dimenzija 10x10
+    Picture picture(10);
 
-    // Dinamičko kreiranje objekta i testiranje ostalih funkcija
-    Picture* dynPicture = new Picture(5, 5);
-    dynPicture->ucitajSadrzaj();
-    dynPicture->brightness(50);
-    dynPicture->resize(3, 3);
-    dynPicture->prikazi();
-    delete dynPicture;
+    // Učitavanje sadržaja matrice sa standardnog ulaza
+    std::cout << "Unesite elemente matrice (10x10):" << std::endl;
+    picture.loadFromInput();
+
+    // Prikazivanje originalne slike
+    std::cout << "Originalna slika:" << std::endl;
+    picture.display();
+
+    // Prikazivanje dimenzija slike
+    auto dimensions = picture.getDimensions();
+    std::cout << "Dimenzije slike su: " << dimensions.first << "x" << dimensions.second << std::endl;
+
+    // Promena osvetljenosti
+    picture.brightness(50);
+    std::cout << "Slika sa promenjenom osvetljenošću:" << std::endl;
+    picture.display();
+
+    // Promena veličine slike
+    picture.resize(5, 5);
+    std::cout << "Slika nakon promene veličine (5x5):" << std::endl;
+    picture.display();
 
     return 0;
 }
+
