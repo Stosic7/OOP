@@ -139,7 +139,7 @@ void Paketic::RemoveMinimum(Poklon** p)
 
 	int min = 0;
 	for (int i = 1; i < top; i++)
-		if (niz[i]->vratiBrojMasnica() < niz[i]->vratiBrojMasnica())
+		if (niz[i]->vratiBrojMasnica() < niz[min]->vratiBrojMasnica())
 			min = i; // pamti se min
 
 	*p = niz[min]; // u prvi *p se pamti min el niza
