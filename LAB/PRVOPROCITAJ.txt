@@ -1,5 +1,0 @@
-Svi zadaci su smesteni u jedan CPP fajl. Trebate da razdvojite header klase, implementaciju (.cpp) klase i main klasu kad pokazujete na laboratorijskim vezbama. 
-Ako ih pokazete ovako kako sam ja pisao nece vam priznati, barem nama nisu. Ja sam ovako pisao jer me je mrzelo da deklaraciju odvajam od implementaicje ali to je najmanji deo posla. 
-Prekopirajte vas zadatak, i samo razdvojite deklaraciju od implementacije u vasem Visual Studio-u i to je to.
-
-POSTOJI SANSA DA SAM NEKI ZADATAK POMESAO. AKO JESAM POSALJITE MI PORUKU NA INSTAGRAMU ILI PRIJAVITE ISSUE.
